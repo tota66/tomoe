@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2012-04-22 17:42:20
+<?php /* Smarty version 2.6.26, created on 2012-04-29 18:46:22
          compiled from login.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('block', 'form', 'login.tpl', 14, false),array('function', 'form_input', 'login.tpl', 16, false),)), $this); ?>
@@ -17,7 +17,7 @@ smarty_core_load_plugins(array('plugins' => array(array('block', 'form', 'login.
     <p>
         <?php $this->_tag_stack[] = array('form', array('ethna_action' => 'login_do')); $_block_repeat=true;smarty_block_form($this->_tag_stack[count($this->_tag_stack)-1][1], null, $this, $_block_repeat);while ($_block_repeat) { ob_start(); ?>
         <dl>
-            <dt>メールアドレス</dt><dd><?php echo smarty_function_form_input(array('name' => 'mailaddress'), $this);?>
+            <dt>ユーザID</dt><dd><?php echo smarty_function_form_input(array('name' => 'userid'), $this);?>
 </dd>
         </dl>
         <dl>

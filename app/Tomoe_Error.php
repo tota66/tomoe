@@ -16,4 +16,10 @@
  *  Example:
  *  define('E_LOGIN_INVALID', 256);
  */
+ /** エラーコード： ユーザ認証エラー */
+ define ('E_TOMOE_AUTH', 300);
+
+ /** エラーコード： DB接続エラー */
+ define ('E_TOMOE_DBCONNECT', 301);
+
 ?>

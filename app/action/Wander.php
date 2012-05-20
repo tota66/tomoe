@@ -1,6 +1,6 @@
 <?php
 /**
- *  Commit.php
+ *  Wander.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  commit Form implementation.
+ *  wander Form implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Form_Commit extends Tomoe_ActionForm
+class Tomoe_Form_Wander extends Tomoe_ActionForm
 {
     /**
      *  @access private
@@ -47,13 +47,6 @@ class Tomoe_Form_Commit extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
-        'comment' => array(
-            'type' => VAR_TYPE_STRING,
-            'form_type' => FORM_TYPE_TEXTAREA,
-            'name' => 'コメント',
-            'max' => 140,
-            'required' => true,
-        ),
     );
 
     /**
@@ -73,16 +66,16 @@ class Tomoe_Form_Commit extends Tomoe_ActionForm
 }
 
 /**
- *  commit action implementation.
+ *  wander action implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_Commit extends Tomoe_ActionClass
+class Tomoe_Action_Wander extends Tomoe_ActionClass
 {
     /**
-     *  preprocess of commit Action.
+     *  preprocess of wander Action.
      *
      *  @access public
      *  @return string    forward name(null: success.
@@ -90,22 +83,18 @@ class Tomoe_Action_Commit extends Tomoe_ActionClass
      */
     function prepare()
     {
-        if ($this->af->validate() > 0) {
-            return 'index';
-        }
-
         return null;
     }
 
     /**
-     *  commit action implementation.
+     *  wander action implementation.
      *
      *  @access public
      *  @return string  forward name.
      */
     function perform()
     {
-        return 'index';
+        return 'wander';
     }
 }
 

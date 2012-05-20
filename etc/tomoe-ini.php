@@ -10,7 +10,7 @@ $config = array(
 
     // debug
     // (to enable ethna_info and ethna_unittest, turn this true)
-    'debug' => false,
+    'debug' => true,
 
     // db
     // sample-1: single db
@@ -32,7 +32,7 @@ $config = array(
     // log
     // sample-1: sigile facility
     'log_facility'          => 'echo',
-    'log_level'             => 'warning',
+    'log_level'             => 'notice',
     'log_option'            => 'pid,function,pos',
     'log_filter_do'         => '',
     'log_filter_ignore'     => 'Undefined index.*%%.*tpl',

@@ -20,8 +20,13 @@ set_include_path(implode(PATH_SEPARATOR, array($app, $lib)) . PATH_SEPARATOR . g
 require_once 'Ethna/Ethna.php';
 require_once 'Tomoe_Error.php';
 require_once 'Tomoe_ActionClass.php';
+require_once 'Tomoe_AuthActionClass.php';
 require_once 'Tomoe_ActionForm.php';
 require_once 'Tomoe_ViewClass.php';
+require_once 'Tomoe_DBManager.php';
+require_once 'Tomoe_UserManager.php';
+require_once 'Tomoe_ItemManager.php';
+require_once 'Tomoe_StatusManager.php';
 
 /**
  *  Tomoe application Controller definition.

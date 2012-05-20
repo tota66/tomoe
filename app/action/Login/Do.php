@@ -47,8 +47,8 @@ class Tomoe_Form_LoginDo extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
-        'mailaddress' => array(
-            'name' => 'メールアドレス',
+        'userid' => array(
+            'name' => 'ユーザID',
             'required' => true,
             'max' => 255,
             /*'filter' => FILTER_HW,*/
@@ -133,29 +133,23 @@ class Tomoe_Action_LoginDo extends Tomoe_ActionClass
     {
         $error_msg = array();
 
-        $user = $this->af->get('mailaddress');
+        $user = $this->af->get('userid');
         $pass = $this->af->get('password');
-        // PEAR::DBを使う
-        $db =& $this->backend->getDB('v5');
-        if ($db == Ethna_Error) {
+        
+        // ユーザマネージャオブジェクト生成
+        $userMng =& new Tomoe_UserManager($this->backend);
+
+        // 認証処理
+        $result = $userMng->auth($user, $pass);
+        if (Ethna::isError($result)) {
             // error
-            $error_msg = "DB ERROR\n";
-            $this->ae->add($name, $error_msg);
+            $error_msg = "ユーザIDまたはパスワードが一致しません\n";
+            $this->ae->add(null, $error_msg);  // エラーオブジェクトを登録。第1引数nullの場合templateでは{$errors}で表示
             return 'login';
         }
-        //$sql = "SELECT * FROM member WHERE name='" . $db->quoteSmart($user) . "' AND password='" . $db->quoteSmart($pass) . "'";
-        var_dump($user);
-        var_dump($pass);
-        $sql = "SELECT * FROM member WHERE name='" . $user . "' AND password='" . $pass . "'";
-        $result =& $db->query($sql);
-        $data =& $result->fetchRow();
-        var_dump($data);
-        // 合致するデータがなかったらエラー
-        if (empty($data)) {
-            $error_msg = "ID or password is wrong.\n";
-            $this->ae->add($name, $error_msg);
-            return 'login';
-        }
+
+        // ユーザIDをセッションに保持
+        $this->session->set('userid', $userMng->getUserID());
 
         return 'index';
     }

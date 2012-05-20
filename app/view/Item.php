@@ -1,6 +1,6 @@
 <?php
 /**
- *  {$view_path}
+ *  Item.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  {$forward_name} view implementation.
+ *  item view implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class {$view_class} extends Tomoe_ViewClass
+class Tomoe_View_Item extends Tomoe_ViewClass
 {
     /**
      *  preprocess before forwarding.

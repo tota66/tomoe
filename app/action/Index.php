@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Index.php
  *
@@ -48,6 +49,33 @@ class Tomoe_Form_Index extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
+        'LV' => array(
+            'name' => 'レベル',
+            'type' => VAR_TYPE_INT,        ),
+        'SJ' => array(
+            'name' => 'ソウルジェム浄化度',
+            'type' => VAR_TYPE_INT,        ),
+        'EXP' => array(
+            'name' => '経験値',
+            'type' => VAR_TYPE_INT,        ),
+        'nextEXP' => array(
+            'name' => '目標経験値',
+            'type' => VAR_TYPE_INT,        ),
+        'money' => array(
+            'name' => '所持金',
+            'type' => VAR_TYPE_INT,        ),
+        'message' => array(
+            'name' => 'マミさん名言',
+            'type' => VAR_TYPE_STRING,        ),
+        'attack' => array(
+            'name' => '攻撃力',
+            'type' => VAR_TYPE_INT,        ),
+        'defence' => array(
+            'name' => '防御力',
+            'type' => VAR_TYPE_INT,        ),
+        'continue' => array(
+            'name' => 'コンティニュー回数',
+            'type' => VAR_TYPE_INT,        ),
     );
 
     /**
@@ -73,14 +101,8 @@ class Tomoe_Form_Index extends Tomoe_ActionForm
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_Index extends Tomoe_ActionClass
+class Tomoe_Action_Index extends Tomoe_AuthActionClass
 {
-    function authenticate()
-    {
-        if (!$this->session->isStart()) {
-            return 'login';
-        }
-    }
 
     /**
      *  preprocess Index action.
@@ -90,12 +112,12 @@ class Tomoe_Action_Index extends Tomoe_ActionClass
      */
     function prepare()
     {
-        /**
+        
         if ($this->af->validate() > 0) {
             return 'error';
         }
-        $sample = $this->af->get('sample');
-        */
+        $this->session->regenerateId();
+
         return null;
     }
 
@@ -107,7 +129,19 @@ class Tomoe_Action_Index extends Tomoe_ActionClass
      */
     function perform()
     {
-        $this->af->setAppNE('foo', sprintf('<s>%d</s>', time()));
+        /*$status = new Tomoe_StatusManager($this->backend, $this->session->get('userid'));
+        
+        // ステータスをセット
+        $this->af->set('LV', $status->getLV());
+        $this->af->set('SJ', $status->getSJ());
+        $this->af->set('EXP', $status->getEXP());
+        $this->af->set('nextEXP', $status->getNextEXP());
+        $this->af->set('money', $status->getMoneyPossess());
+        $this->af->set('message', $status->getMessage());
+        $this->af->set('attack', $status->getAttackValue());
+        $this->af->set('defence', $status->getDefenceValue());
+        $this->af->set('continue', $status->getContinueCount());*/
+        
         return 'index';
     }
 }

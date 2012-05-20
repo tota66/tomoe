@@ -1,6 +1,6 @@
 <?php
 /**
- *  Commit.php
+ *  Item/Do.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  commit Form implementation.
+ *  item_do Form implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Form_Commit extends Tomoe_ActionForm
+class Tomoe_Form_ItemDo extends Tomoe_ActionForm
 {
     /**
      *  @access private
@@ -47,13 +47,6 @@ class Tomoe_Form_Commit extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
-        'comment' => array(
-            'type' => VAR_TYPE_STRING,
-            'form_type' => FORM_TYPE_TEXTAREA,
-            'name' => 'コメント',
-            'max' => 140,
-            'required' => true,
-        ),
     );
 
     /**
@@ -73,16 +66,16 @@ class Tomoe_Form_Commit extends Tomoe_ActionForm
 }
 
 /**
- *  commit action implementation.
+ *  item_do action implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_Commit extends Tomoe_ActionClass
+class Tomoe_Action_ItemDo extends Tomoe_ActionClass
 {
     /**
-     *  preprocess of commit Action.
+     *  preprocess of item_do Action.
      *
      *  @access public
      *  @return string    forward name(null: success.
@@ -90,22 +83,33 @@ class Tomoe_Action_Commit extends Tomoe_ActionClass
      */
     function prepare()
     {
-        if ($this->af->validate() > 0) {
-            return 'index';
-        }
-
         return null;
     }
 
     /**
-     *  commit action implementation.
+     *  item_do action implementation.
      *
      *  @access public
      *  @return string  forward name.
      */
     function perform()
     {
-        return 'index';
+        $item =& new Tomoe_ItemManager($this->backend);
+
+        // ユーザIDの取得
+        $user_id = $this->session->get('userid');
+
+        // アイテム抽選とステータス更新
+        $rc = $item->lotItem($user_id);
+        if (Ethna::isError($rc)) {
+            $this->ae->addObject('itemError', $rc);
+            return 'index';
+        }
+
+        $itemName = $item->getItemName();
+        $this->af->setApp('itemName', $itemName);
+
+        return 'item';
     }
 }
 

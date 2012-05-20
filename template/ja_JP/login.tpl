@@ -13,7 +13,7 @@
     <p>
         {form ethna_action="login_do"}
         <dl>
-            <dt>メールアドレス</dt><dd>{form_input name="mailaddress"}</dd>
+            <dt>ユーザID</dt><dd>{form_input name="userid"}</dd>
         </dl>
         <dl>
             <dt>パスワード</dt><dd>{form_input name="password"}</dd>
