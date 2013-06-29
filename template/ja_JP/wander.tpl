@@ -1,11 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Tomoe</h1>
-        <h2>さまよう</h2>
-        <a href="{$app.link}?action_wander_battle=true">敵だ！</a>
-    </body>
-</html>
+{include file='inc/pre_settings.tpl' title='ホーム'}
+
+{include file='inc/header.tpl'}
+<div id="wrapper">
+    <div class="battle clearfix">
+        <img src="img/mami_0.png" />
+        <div class="destination">
+            <ul>
+                <li><a href="{$app.link}?action_wander_battle=true">学校</a></li>
+                <li><a href="{$app.link}?action_wander_battle=true">バイト</a></li>
+                <li><a href="{$app.link}?action_wander_battle=true">病院</a></li>
+                <li><a href="{$app.link}?action_wander_battle=true">公園</a></li>
+                <li><a href="{$app.link}?action_wander_battle=true">教会</a></li>
+                <li><a href="#" id="test">特訓場所</a></li>
+                <li><a href="#" id="ajax_test">ajax_test</a></li>
+            </ul>
+        </div>
+        <div class="message">
+            <p>どこへ行きますか？</p>
+        </div>
+    </div>
+</div>
+{include file='inc/footer.tpl'}

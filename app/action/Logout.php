@@ -1,6 +1,6 @@
 <?php
 /**
- *  Wander/Result.php
+ *  Logout.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  wander_result Form implementation.
+ *  logout Form implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Form_WanderResult extends Tomoe_ActionForm
+class Tomoe_Form_Logout extends Tomoe_ActionForm
 {
     /**
      *  @access private
@@ -66,16 +66,16 @@ class Tomoe_Form_WanderResult extends Tomoe_ActionForm
 }
 
 /**
- *  wander_result action implementation.
+ *  logout action implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_WanderResult extends Tomoe_ActionClass
+class Tomoe_Action_Logout extends Tomoe_ActionClass
 {
     /**
-     *  preprocess of wander_result Action.
+     *  preprocess of logout Action.
      *
      *  @access public
      *  @return string    forward name(null: success.
@@ -87,33 +87,17 @@ class Tomoe_Action_WanderResult extends Tomoe_ActionClass
     }
 
     /**
-     *  wander_result action implementation.
+     *  logout action implementation.
      *
      *  @access public
      *  @return string  forward name.
      */
     function perform()
     {
-        $user_id = $this->session->get('userid');
-        $enemy_id = $this->session->get('enemy_id');
+        // セッション破棄
+        $this->session->destroy();
         
-        $statusMng = new Tomoe_StatusManager($this->backend);
-        $enemyMng = new Tomoe_EnemyManager($this->backend);
-        $battle = new Battle();
-        
-        $status = $statusMng->getStatusById($user_id);
-        $enemy = $enemyMng->getEnemyById($enemy_id);
-
-        // 敵との戦闘結果
-        $isBoss = 0;
-        $result = $battle->getResult($status, $enemy, $isBoss);
-        $US = $result['user'];
-        $statusMng->updateAfterBattle($user_id, $US['HP'], $US['SJ'], $US['money'], 
-            $US['exp'], $US['nextexp'], $US['level'], $US['attack'], $US['defence']);   // DB更新
-        
-        $this->af->setApp('rt', $result);
-        
-        return 'wander_result';
+        return 'login';
     }
 }
 

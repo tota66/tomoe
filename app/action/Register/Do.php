@@ -1,6 +1,6 @@
 <?php
 /**
- *  Wander/Result.php
+ *  Register/Do.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  wander_result Form implementation.
+ *  register_do Form implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Form_WanderResult extends Tomoe_ActionForm
+class Tomoe_Form_RegisterDo extends Tomoe_ActionForm
 {
     /**
      *  @access private
@@ -47,6 +47,29 @@ class Tomoe_Form_WanderResult extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
+        'userid' => array(
+            'name' => 'ユーザID',
+            'required' => true,
+            'max' => 255,
+            'filter' => FILTER_HW,
+            //'custom' => 'checkMailaddress',
+            'form_type' => FORM_TYPE_TEXT,
+            'type' => VAR_TYPE_STRING,        ),
+        'password' => array(
+            'name' => 'パスワード',
+            'required' => true,
+            'max' => 255,
+            'form_type' => FORM_TYPE_PASSWORD,
+            'type' => VAR_TYPE_STRING,
+        ),
+        'password_conf' => array(
+            'name' => 'パスワード(確認)',
+            'required' => true,
+            'max' => 255,
+            'custom' => 'checkPassword',
+            'form_type' => FORM_TYPE_PASSWORD,
+            'type' => VAR_TYPE_STRING,
+        ),
     );
 
     /**
@@ -66,16 +89,16 @@ class Tomoe_Form_WanderResult extends Tomoe_ActionForm
 }
 
 /**
- *  wander_result action implementation.
+ *  register_do action implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_WanderResult extends Tomoe_ActionClass
+class Tomoe_Action_RegisterDo extends Tomoe_ActionClass
 {
     /**
-     *  preprocess of wander_result Action.
+     *  preprocess of register_do Action.
      *
      *  @access public
      *  @return string    forward name(null: success.
@@ -83,37 +106,50 @@ class Tomoe_Action_WanderResult extends Tomoe_ActionClass
      */
     function prepare()
     {
+        if ($this->af->validate() > 0) {
+            return 'register';  // 入力にエラーがある場合再びRegister画面へ
+        }
+        // セッションスタート
+        $this->session->start();
         return null;
     }
 
     /**
-     *  wander_result action implementation.
+     *  register_do action implementation.
      *
      *  @access public
      *  @return string  forward name.
      */
     function perform()
     {
-        $user_id = $this->session->get('userid');
-        $enemy_id = $this->session->get('enemy_id');
+        $user = $this->af->get('userid');
+        $pass = $this->af->get('password');
         
-        $statusMng = new Tomoe_StatusManager($this->backend);
-        $enemyMng = new Tomoe_EnemyManager($this->backend);
-        $battle = new Battle();
-        
-        $status = $statusMng->getStatusById($user_id);
-        $enemy = $enemyMng->getEnemyById($enemy_id);
+        // マネージャオブジェクト生成
+        $this->userMng   = new Tomoe_UserManager($this->backend);
+        $this->statusMng = new Tomoe_StatusManager($this->backend);
 
-        // 敵との戦闘結果
-        $isBoss = 0;
-        $result = $battle->getResult($status, $enemy, $isBoss);
-        $US = $result['user'];
-        $statusMng->updateAfterBattle($user_id, $US['HP'], $US['SJ'], $US['money'], 
-            $US['exp'], $US['nextexp'], $US['level'], $US['attack'], $US['defence']);   // DB更新
+        // ユーザ情報をDBに追加
+        $rc = $this->userMng->insertUser($user, $pass);
+        if (Ethna::isError($rc)) {
+            $error_msg = "ユーザ情報を追加できませんでした。";
+            $this->ae->add(null, $error_msg);
+            return 'register';
+        }    
+        $user_id = $this->userMng->getIdByName($user);
+
+        // ステータス情報をDBに追加
+        $rc = $this->statusMng->insertInitStatus($user_id);
+        if (Ethna::isError($rc)) {
+            $error_msg = "ステータス情報を追加できませんでした。";
+            $this->ae->add(null, $error_msg);
+            return 'register';
+        }    
+
+        // ユーザIDをセッションに保持
+        $this->session->set('userid', $user_id);
         
-        $this->af->setApp('rt', $result);
-        
-        return 'wander_result';
+        return 'index';
     }
 }
 

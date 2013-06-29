@@ -1,11 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Tomoe</h1>
-        <h2>たおした！やったわ！</h2>
+{include file='inc/pre_settings.tpl' title='ホーム'}
+
+{include file='inc/header.tpl'}
+<div id="wrapper">
+    <div class="battle clearfix">
+        <img src="img/mami_0.png" />
+        <div class="result">
+{if $app.rt.win == 1}
+        <h1>たおした！やったわ！</h1>
+            <ul>
+                <li>HP: {$app.rt.user.HP}</li>
+                <li>敵に{$app.rt.attack}のダメージを与えた！</li>
+                <li>{$app.rt.damage}のダメージを受けた！</li>
+                <li>{$app.rt.exp}の経験値を得た！</li>
+                <li>{$app.rt.money}のお金を得た！</li>
+                <li>{$app.rt.SJ}だけソウルジェムが浄化された！</li>
+            </ul>
+{else}
+        <h1>負けてしまった…。</h1>
+            <ul>
+                <li>{$app.rt.SJ}だけソウルジェムが濁った</li>
+            </ul>
+{/if}
+        </div>
         <a href="{$app.link}?action_index=true">帰りましょう</a>
-    </body>
-</html>
+    </div>
+</div>
+{include file='inc/footer.tpl'}

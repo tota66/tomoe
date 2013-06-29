@@ -1,0 +1,112 @@
+/*
+ * styles
+ * 
+ */
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix { display: inline-table; }
+
+body {
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 0px;
+    margin: 5px auto;
+}
+
+#wrapper {
+    width: 320px;
+    height: 520px;
+    /*line-height: 0;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#main {
+    height: 520px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #DDDDDD;
+    margin: 0px 10px;
+}
+
+img {
+    margin-top: 10px;
+}
+
+div.link {
+    margin: 20px auto;
+}
+
+input {
+    margin: 10px auto;
+}
+
+/*********************
+ * 
+ * home
+ * 
+ *********************/
+#home img {
+    margin-top: 10px;
+}
+
+#home div.message {
+    width: 300px;
+    height: 30px;
+    padding: 10px 0px;
+    margin: auto;
+    text-align: center;
+    background-color: #000000;
+    color: #FFFFFF;
+    border: 3px solid #FFEFD5;
+}
+
+#home div.status {
+    width: 240px;
+    margin-left: 80px;
+    margin-top: 10px;
+}
+
+div.status td {
+    text-align: left;
+    width: 100px;
+}
+
+div.command {
+    margin: 10px auto;
+}
+
+div.logout {
+    margin: 20px auto;
+}
+
+/*********************
+ * 
+ * item
+ * 
+ *********************/
+div.item ul {
+    width: 300px;
+    margin: auto;
+}
+
+div.item li{
+    width: 50px;
+    float: left;
+}

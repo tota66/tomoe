@@ -26,7 +26,10 @@ require_once 'Tomoe_ViewClass.php';
 require_once 'Tomoe_DBManager.php';
 require_once 'Tomoe_UserManager.php';
 require_once 'Tomoe_ItemManager.php';
+require_once 'Tomoe_EnemyManager.php';
 require_once 'Tomoe_StatusManager.php';
+require_once 'Tomoe_Define.php';
+require_once 'Battle.php';
 
 /**
  *  Tomoe application Controller definition.

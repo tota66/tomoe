@@ -1,0 +1,23 @@
+/*
+ * header.css
+ * 
+ */
+
+#header {
+    width: 320px;
+    height: 30px;
+    /*padding: 0px 50px;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: #FFD700;
+}
+
+#footer {
+    width: 320px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: #FFD700;
+}

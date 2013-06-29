@@ -1,13 +1,12 @@
-{include file='inc/pre_settings.tpl' title='ログイン'}
+{include file='inc/pre_settings.tpl' title='新規登録'}
 
 {include file='inc/header.tpl'}
 <div id="wrapper">
-<div id="main">
     <div class="home_img">
         <img src="img/mami_0.png" />
     </div>
     <div class="form">
-        {form ethna_action="login_do"}
+        {form ethna_action="register_do"}
         <dl>
             <dt>ユーザID</dt><dd>{form_input name="userid"}</dd>
         </dl>
@@ -28,8 +27,7 @@
         {/form}
     </div>
     <div class="link">
-        <a href="{$app.link}?action_register=true">新規登録</a>
+        <a href="?action_login=true">ログイン画面</a>
     </div>
 </div>
-</div>
-{include file='inc/footer.tpl'}
+{include file='inc/footer.tpl}

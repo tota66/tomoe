@@ -1,11 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Tomoe</h1>
-        <h2>敵があらわれた！！</h2>
-        <a href="{$app.link}?action_wander_result=true">一斉攻撃！ティロ・フィナーレ！</a>
-    </body>
-</html>
+{include file='inc/pre_settings.tpl' title='街'}
+
+{include file='inc/header.tpl'}
+<div id="wrapper">
+    <div class="battle clearfix">
+        <img src="img/mami_0.png" />
+        <div class="enemy">
+            <h1>{$app.enemy.name}があらわれた！</h1>
+        </div>
+        <div class="command">
+            <a href="{$app.link}?action_wander_result=true">一斉攻撃！ティロ・フィナーレ！</a>
+        </div>
+    </div>
+</div>
+{include file='inc/footer.tpl'}

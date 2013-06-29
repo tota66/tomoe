@@ -94,6 +94,15 @@ class Tomoe_Action_Item extends Tomoe_AuthActionClass
      */
     function perform()
     {
+        // ユーザIDの取得
+        $user_id = $this->session->get('userid');
+
+        // アイテムマネージャ生成
+        $itemMng = new Tomoe_ItemManager($this->backend);
+
+        $item_list = $itemMng->getPossessionList($user_id);
+        $this->af->setApp('items', $item_list);
+        
         return 'item';
     }
 

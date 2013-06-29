@@ -51,7 +51,7 @@ class Tomoe_Form_LoginDo extends Tomoe_ActionForm
             'name' => 'ユーザID',
             'required' => true,
             'max' => 255,
-            /*'filter' => FILTER_HW,*/
+            'filter' => FILTER_HW,
             //'custom' => 'checkMailaddress',
             'form_type' => FORM_TYPE_TEXT,
             'type' => VAR_TYPE_STRING,        ),
@@ -136,11 +136,11 @@ class Tomoe_Action_LoginDo extends Tomoe_ActionClass
         $user = $this->af->get('userid');
         $pass = $this->af->get('password');
         
-        // ユーザマネージャオブジェクト生成
-        $userMng =& new Tomoe_UserManager($this->backend);
+        // マネージャオブジェクト生成
+        $this->userMng   = new Tomoe_UserManager($this->backend);
 
         // 認証処理
-        $result = $userMng->auth($user, $pass);
+        $result = $this->userMng->auth($user, $pass);
         if (Ethna::isError($result)) {
             // error
             $error_msg = "ユーザIDまたはパスワードが一致しません\n";
@@ -149,7 +149,7 @@ class Tomoe_Action_LoginDo extends Tomoe_ActionClass
         }
 
         // ユーザIDをセッションに保持
-        $this->session->set('userid', $userMng->getUserID());
+        $this->session->set('userid', $this->userMng->getIdByname($user));
 
         return 'index';
     }

@@ -18,6 +18,12 @@
  */
 class Tomoe_ActionClass extends Ethna_ActionClass
 {
+    var $userMng = null;
+
+    var $statusMng = null;
+
+    var $itemMng = null;
+
     /**
      *  authenticate before executing action.
      *

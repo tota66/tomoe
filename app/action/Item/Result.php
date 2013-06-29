@@ -1,6 +1,6 @@
 <?php
 /**
- *  Wander/Result.php
+ *  Item/Result.php
  *
  *  @author     {$author}
  *  @package    Tomoe
@@ -8,13 +8,13 @@
  */
 
 /**
- *  wander_result Form implementation.
+ *  item_result Form implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Form_WanderResult extends Tomoe_ActionForm
+class Tomoe_Form_ItemResult extends Tomoe_ActionForm
 {
     /**
      *  @access private
@@ -47,6 +47,10 @@ class Tomoe_Form_WanderResult extends Tomoe_ActionForm
         *                                        // is defined in this(parent) class.
         *  ),
         */
+        'id' => array(
+            'type' => VAR_TYPE_INT,
+            'name' => 'id',
+        ),
     );
 
     /**
@@ -66,16 +70,16 @@ class Tomoe_Form_WanderResult extends Tomoe_ActionForm
 }
 
 /**
- *  wander_result action implementation.
+ *  item_result action implementation.
  *
  *  @author     {$author}
  *  @access     public
  *  @package    Tomoe
  */
-class Tomoe_Action_WanderResult extends Tomoe_ActionClass
+class Tomoe_Action_ItemResult extends Tomoe_ActionClass
 {
     /**
-     *  preprocess of wander_result Action.
+     *  preprocess of item_result Action.
      *
      *  @access public
      *  @return string    forward name(null: success.
@@ -87,33 +91,31 @@ class Tomoe_Action_WanderResult extends Tomoe_ActionClass
     }
 
     /**
-     *  wander_result action implementation.
+     *  item_result action implementation.
      *
      *  @access public
      *  @return string  forward name.
      */
     function perform()
     {
+        // ユーザIDの取得
         $user_id = $this->session->get('userid');
-        $enemy_id = $this->session->get('enemy_id');
-        
-        $statusMng = new Tomoe_StatusManager($this->backend);
-        $enemyMng = new Tomoe_EnemyManager($this->backend);
-        $battle = new Battle();
-        
-        $status = $statusMng->getStatusById($user_id);
-        $enemy = $enemyMng->getEnemyById($enemy_id);
+        $item_id = $this->af->get('id');
 
-        // 敵との戦闘結果
-        $isBoss = 0;
-        $result = $battle->getResult($status, $enemy, $isBoss);
-        $US = $result['user'];
-        $statusMng->updateAfterBattle($user_id, $US['HP'], $US['SJ'], $US['money'], 
-            $US['exp'], $US['nextexp'], $US['level'], $US['attack'], $US['defence']);   // DB更新
+        // アイテムマネージャ生成
+        $itemMng   = new Tomoe_ItemManager($this->backend);
         
-        $this->af->setApp('rt', $result);
-        
-        return 'wander_result';
+        // アイテム使用とステータス更新
+        $item = $itemMng->getItemById($item_id);
+        $rc = $itemMng->useItem($user_id, $item_id);
+        if ($rc == null) {
+            $this->ae->addObject('itemError', $rc);
+            return 'item_result';
+        }
+
+        $this->af->setApp('item', $item);
+
+        return 'item_result';
     }
 }
 

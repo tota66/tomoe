@@ -94,6 +94,19 @@ class Tomoe_Action_WanderBattle extends Tomoe_ActionClass
      */
     function perform()
     {
+        $user_id = $this->session->get('userid');
+
+        $statusMng = new Tomoe_StatusManager($this->backend);
+        $enemyMng = new Tomoe_EnemyManager($this->backend);
+
+        // 敵の抽選
+        $user_LV = $statusMng->getLVById($user_id); 
+        $enemy_id = $enemyMng->getRandomEnemyId($user_LV, 10);
+        $enemy = $enemyMng->getEnemyById($enemy_id);
+
+        $this->session->set('enemy_id', $enemy_id);
+        $this->af->setApp('enemy', $enemy);
+        
         return 'wander_battle';
     }
 }

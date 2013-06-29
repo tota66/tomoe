@@ -94,20 +94,24 @@ class Tomoe_Action_ItemDo extends Tomoe_ActionClass
      */
     function perform()
     {
-        $item =& new Tomoe_ItemManager($this->backend);
 
         // ユーザIDの取得
         $user_id = $this->session->get('userid');
 
+        // アイテムマネージャ生成
+        $itemMng   = new Tomoe_ItemManager($this->backend);
+        
         // アイテム抽選とステータス更新
-        $rc = $item->lotItem($user_id);
-        if (Ethna::isError($rc)) {
-            $this->ae->addObject('itemError', $rc);
+        $item = $itemMng->lotItem($user_id);
+        if (Ethna::isError($item)) {
+            $this->ae->addObject('itemError', $item);
             return 'index';
         }
 
-        $itemName = $item->getItemName();
-        $this->af->setApp('itemName', $itemName);
+        // 所有に追加
+        $itemMng->addItem($user_id, $item['id'], 1);
+
+        $this->af->setApp('itemName', $item['name']);
 
         return 'item';
     }

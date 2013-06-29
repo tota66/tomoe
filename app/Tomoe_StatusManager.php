@@ -21,131 +21,188 @@ class Tomoe_StatusManager extends Tomoe_DBManager
     var $status = array();
 
     
-    /** @var    array   sidx                ステータスインデックス */
-    var $sidx = array('user_id'        => 0,
-                      'level'          => 1,
-                      'SJ'             => 2,
-                      'exp'            => 3,
-                      'nextexp'        => 4,
-                      'money'          => 5,
-                      'message'        => 6,
-                      'attack'         => 7,
-                      'defence'        => 8,
-                      'continue_count' => 9,);
-    
     /**      
      *  コンストラクタ
      *
      *  @access public
      *  @param  object  $_backend   backendオブジェクト 
      */
-    public function __construct(&$_backend, $_userid)
+    public function __construct(&$_backend)
     {
         parent::__construct($_backend);
-        $sql = "SELECT * FROM status WHERE user_id='" . $_userid . "'";
-        $r =& $this->db->query($sql);
-        $this->status =& $r->fetchRow();
     }
 
+    /**
+     * 初期ステータスを挿入
+     * 
+     * @return 成功したらDB_OK, 失敗したらDB_Errorを返す 
+     */
+    public function insertInitStatus($user_id)
+    {
+        $sql = "INSERT INTO status (user_id, SJ, nextexp, money, message, attack, defence) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stt = $this->db->db->prepare($sql);
+        return $this->db->db->execute($stt, array($user_id, INIT_SJ, INIT_NEXTEXP, 
+            INIT_MONEY, MESSAGE_LV1, INIT_ATTACK, INIT_DEFENCE));
+    }
+    
+    /**      
+     *  ユーザIDに対応するステータス情報を取得する
+     *
+     *  @access public
+     *  @return array  ステータスの連想配列
+     */
+    public function getStatusById($user_id)
+    {
+        $sql = "SELECT * FROM status WHERE user_id='" . $user_id . "'";
+        $r =& $this->db->query($sql);
+        $this->status =& $r->fetchRow(DB_FETCHMODE_ASSOC);
+        return $this->status;
+    }
     
     /**      
      *  レベルを取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  レベル値
      */
-    public function getLV()
+    public function getLVById($user_id)
     {
-        return $this->status[1];
+        $st = $this->getStatusById($user_id);
+        return $st['level'];
+    }
+    
+    /**      
+     *  HPを取得する
+     *
+     *  @access public
+     *  @param  int  ユーザID
+     *  @return int  HP値
+     */
+    public function getHPById($user_id)
+    {
+        $st = $this->getStatusById($user_id);
+        return $st['HP'];
     }
 
     /**      
      *  ソルルジェム値を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  ソウルジェム値
      */
-    public function getSJ()
+    public function getSJById($user_id)
     {
-        return $this->status[2];
+        $st = $this->getStatusById($user_id);
+        return $st['SJ'];
     }
 
     /**      
      *  経験値を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  経験値
      */
-    public function getEXP()
+    public function getEXPById($user_id)
     {
-        return $this->status[3];
+        $st = $this->getStatusById($user_id);
+        return $st['exp'];
     }
 
     /**      
      *  目標経験値を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  目標経験値
      */
-    public function getNextEXP()
+    public function getNextEXPById($user_id)
     {
-        return $this->status[4];
+        $st = $this->getStatusById($user_id);
+        return $st['nextexp'];
     }
 
     /**      
      *  所持金を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  所持金額
      */
-    public function getMoneyPossess()
+    public function getMoneyPossessById($user_id)
     {
-        return $this->status[5];
+        $st = $this->getStatusById($user_id);
+        return $st['money'];
     }
 
     /**      
      *  マミさん名言を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return string  メッセージ
      */
-    public function getMessage()
+    public function getMessageById($user_id)
     {
-        return $this->status[6];
+        $st = $this->getStatusById($user_id);
+        return $st['message'];
     }
 
     /**      
      *  攻撃力値を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  攻撃力値
      */
-    public function getAttackValue()
+    public function getAttackValueById($user_id)
     {
-        return $this->status[7];
+        $st = $this->getStatusById($user_id);
+        return $st['attack'];
     }
 
     /**      
      *  防御力値を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  防御力値
      */
-    public function getDefenceValue()
+    public function getDefenceValueById($user_id)
     {
-        return $this->status[8];
+        $st = $this->getStatusById($user_id);
+        return $st['defence'];
     }
 
     /**      
      *  コンティニュー回数を取得する
      *
      *  @access public
+     *  @param  int  ユーザID
      *  @return int  コンティニュー回数
      */
-    public function getContinueCount()
+    public function getContinueCountById($user_id)
     {
-        return $this->status[9];
+        $st = $this->getStatusById($user_id);
+        return $st['continue_count'];
     }
+    
+    /**
+     *  バトル後パラメータを更新 
+     */
+    public function updateAfterBattle($user_id, $HP, $SJ, $money, 
+        $exp, $nextexp, $level, $attack, $defence)
+    {
+        $sql = "UPDATE status SET HP=?, SJ=?, money=?, exp=?, 
+            nextexp=?, level=?, attack=?, defence=? WHERE user_id=?";
+        $stt = $this->db->db->prepare($sql);
+        return $this->db->db->execute($stt, array($HP, $SJ, $money, $exp,
+            $nextexp, $level, $attack, $defence, $user_id)); 
+    }
+        
 
 }
 
